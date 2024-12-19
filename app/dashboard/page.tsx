@@ -1,12 +1,14 @@
-import { auth } from '@/auth';
+'use client';
+
+import { useAuth } from '@/hooks/use-auth';
 import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
-  const session = await auth();
+  const user = await useAuth();
 
-  if (!session?.user) {
-    return redirect('/');
+  if (user?.role !== 'admin') {
+    return redirect('/dashboard/overview');
   } else {
-    redirect('/dashboard/overview');
+    return redirect('/dashboard/tenant');
   }
 }
